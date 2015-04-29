@@ -16,6 +16,9 @@ describe('clouds-controller', function () {
     s.listen();
     s.on('listening', function () {
       var c = controller.createConnection();
+      c.on('ready', function () {
+        c.send(c.id, 'hello, world');
+      });
     });
 
   });
