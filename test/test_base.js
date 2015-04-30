@@ -12,10 +12,10 @@ var EventProxy = require('../lib/utils').EventProxy;
 
 describe('clouds-controller', function () {
 
-  it('message', function (done) {
+  it('send message to other client', function (done) {
 
     var s = controller.createServer();
-    s.listen();
+    s.listen(6480);
 
     var ep = new EventProxy();
 
@@ -60,6 +60,64 @@ describe('clouds-controller', function () {
         ep.all('e1', 'e2', function () {
           console.log('done');
           done();
+        });
+      });
+    });
+
+  });
+
+  it('send message to other client (multi)', function (done) {
+
+    var s = controller.createServer();
+    s.listen(6481);
+
+    var ep = new EventProxy();
+
+    s.on('listening', function () {
+      var c1 = controller.createConnection();
+      c1.on('ready', function () {
+        ep.emit('c1', c1);
+      });
+      var c2 = controller.createConnection();
+      c2.on('ready', function () {
+        ep.emit('c2', c2);
+      });
+    });
+
+    ep.all('c1', 'c2', function (c1, c2) {
+      console.log('sending...');
+      var dataList = [];
+      for (var i = 0; i < 100; i++) {
+        dataList.push('D' + i + '_' + Math.random());
+      }
+      var dataMap = {};
+      dataList.forEach(function (d) {
+        dataMap[d] = false;
+      });
+
+      c2.on('message', function (d) {
+        should.equal(d in dataMap, true);
+        dataMap[d] = true;
+        ep.emit(d);
+      });
+
+      ep.all.apply(ep, dataList.concat([function () {
+        console.log('exit...');
+        c1.exit(function () {
+          ep.emit('e1', c1);
+        });
+        c2.exit(function () {
+          ep.emit('e2', c2);
+        });
+        ep.all('e1', 'e2', function () {
+          console.log('done');
+          done();
+        });
+      }]));
+
+      dataList.forEach(function (d) {
+        c1.send(c2.id, d, function (err) {
+          should.equal(err, null);
         });
       });
     });
