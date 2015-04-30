@@ -25,7 +25,7 @@ describe('clouds-controller', function () {
         ep.emit('c1', c1);
       });
       var c2 = controller.createConnection();
-      c1.on('ready', function () {
+      c2.on('ready', function () {
         ep.emit('c2', c2);
       });
     });
