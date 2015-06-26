@@ -14,17 +14,18 @@ describe('clouds-controller', function () {
 
   it('send message to other client', function (done) {
 
+    var PORT = 6480;
     var s = controller.createServer();
-    s.listen(6480);
+    s.listen(PORT);
 
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection();
+      var c1 = controller.createConnection({controller: {port: PORT}});
       c1.on('ready', function () {
         ep.emit('c1', c1);
       });
-      var c2 = controller.createConnection();
+      var c2 = controller.createConnection({controller: {port: PORT}});
       c2.on('ready', function () {
         ep.emit('c2', c2);
       });
@@ -68,17 +69,18 @@ describe('clouds-controller', function () {
 
   it('send message to other client (multi)', function (done) {
 
+    var PORT = 6481;
     var s = controller.createServer();
-    s.listen(6481);
+    s.listen(PORT);
 
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection();
+      var c1 = controller.createConnection({controller: {port: PORT}});
       c1.on('ready', function () {
         ep.emit('c1', c1);
       });
-      var c2 = controller.createConnection();
+      var c2 = controller.createConnection({controller: {port: PORT}});
       c2.on('ready', function () {
         ep.emit('c2', c2);
       });
@@ -119,6 +121,96 @@ describe('clouds-controller', function () {
         c1.send(c2.id, d, function (err) {
           should.equal(err, null);
         });
+      });
+    });
+
+  });
+
+  it('exec command', function (done) {
+
+    var PORT = 6482;
+    var s = controller.createServer();
+    s.listen(PORT);
+
+    var ep = new EventProxy();
+
+    s.on('listening', function () {
+      var c1 = controller.createConnection({controller: {port: PORT}});
+      c1.on('ready', function () {
+        ep.emit('c1', c1);
+      });
+      var c2 = controller.createConnection({controller: {port: PORT}});
+      c2.on('ready', function () {
+        ep.emit('c2', c2);
+      });
+    });
+
+    ep.all('c1', 'c2', function (c1, c2) {
+      async.series([
+        function (next) {
+          c1.registerKey('aaaa', 0, next);
+        },
+        function (next) {
+          c1.registerKey('bbbb', 2, next);
+        },
+        function (next) {
+          c1.keys('*', function (err, ret) {
+            ret.should.eql(['aaaa', 'bbbb']);
+            next(err);
+          });
+        },
+        function (next) {
+          c2.keys('*', function (err, ret) {
+            ret.should.eql(['aaaa', 'bbbb']);
+            next(err);
+          });
+        },
+        function (next) {
+          c1.deleteKey('aaaa', next);
+        },
+        function (next) {
+          c2.keys('*', function (err, ret) {
+            ret.should.eql(['bbbb']);
+            next(err);
+          });
+        },
+        function (next) {
+          setTimeout(next, 3000);
+        },
+        function (next) {
+          c2.keys('*', function (err, ret) {
+            ret.should.eql([]);
+            next(err);
+          });
+        },
+        function (next) {
+          c2.registerKey('a', 0, next);
+        },
+        function (next) {
+          c2.registerKey('b', 0, next);
+        },
+        function (next) {
+          c2.registerKey('c', 0, next);
+        },
+        function (next) {
+          c2.keys('*', function (err, ret) {
+            ret.should.eql(['a', 'b', 'c']);
+            next(err);
+          });
+        },
+        function (next) {
+          c2.deleteKeys(['a', 'b'], next);
+        },
+        function (next) {
+          c2.keys('*', function (err, ret) {
+            ret.should.eql(['c']);
+            next(err);
+          });
+        }
+      ], function (err) {
+        should.equal(err, null);
+        console.log('done');
+        done();
       });
     });
 
