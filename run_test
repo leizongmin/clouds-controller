@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export DEBUG=clouds-controller:*
+export DEBUG=clouds-controller:*,clouds:*
 
 # 执行测试，如果指定了参数，则只测试指定文件
 if [ $1 ]
