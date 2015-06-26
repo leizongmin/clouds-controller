@@ -6,8 +6,8 @@
 
 var should = require('should');
 var async = require('async');
-var controller = require('../');
-var EventProxy = require('../lib/utils').EventProxy;
+var controller = require('../../');
+var EventProxy = require('../../lib/utils').EventProxy;
 
 
 describe('clouds-controller', function () {
