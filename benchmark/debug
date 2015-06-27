@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export DEBUG=clouds-controller:*,clouds:*
+node $1 $2

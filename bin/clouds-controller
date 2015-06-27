@@ -42,8 +42,8 @@ server.on('connection', function (s) {
   log.info('new connection from [%s] %s:%s %s', s.remoteFamily, s.remoteAddress, s.remotePort, getServerInfo());
 });
 
-server.on('client ready', function (p, s) {
-  log.info('client [%s] ready from [%s] %s:%s %s', p.id, s.remoteFamily, s.remoteAddress, s.remotePort, getServerInfo());
+server.on('client ready', function (id, p, s) {
+  log.info('client [%s] ready from [%s] %s:%s %s', id, s.remoteFamily, s.remoteAddress, s.remotePort, getServerInfo());
 });
 
 server.on('client removed', function (id) {
