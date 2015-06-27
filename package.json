@@ -24,8 +24,20 @@
     "lei-utils": "^1.0.6"
   },
   "devDependencies": {
+    "blanket": "^1.1.7",
     "clouds": "^0.1.11",
-    "mocha": "^2.2.4",
+    "mocha": "^2.2.5",
     "should": "^6.0.1"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
+        "lib"
+      ],
+      "data-cover-never": [
+        "node_modules",
+        "tests"
+      ]
+    }
   }
 }
