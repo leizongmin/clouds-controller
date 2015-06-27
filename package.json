@@ -36,7 +36,8 @@
       ],
       "data-cover-never": [
         "node_modules",
-        "tests"
+        "tests",
+        "clouds/lib"
       ]
     }
   }

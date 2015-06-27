@@ -51,6 +51,22 @@ server.listen(6480, '127.0.0.1');
 ```
 
 
+## Coverage
+
+```bash
+$ ./run_coverage
+```
+
+91% coverage, 442 SLOC
+
+
+## Tests
+
+```bash
+$ ./run_test
+```
+
+
 ## License
 
 ```
