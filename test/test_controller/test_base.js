@@ -22,11 +22,11 @@ describe('clouds-controller', function () {
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection({controller: {port: PORT}});
+      var c1 = controller.createConnection({port: PORT});
       c1.on('ready', function () {
         ep.emit('c1', c1);
       });
-      var c2 = controller.createConnection({controller: {port: PORT}});
+      var c2 = controller.createConnection({port: PORT});
       c2.on('ready', function () {
         ep.emit('c2', c2);
       });
@@ -77,11 +77,11 @@ describe('clouds-controller', function () {
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection({controller: {port: PORT}});
+      var c1 = controller.createConnection({port: PORT});
       c1.on('ready', function () {
         ep.emit('c1', c1);
       });
-      var c2 = controller.createConnection({controller: {port: PORT}});
+      var c2 = controller.createConnection({port: PORT});
       c2.on('ready', function () {
         ep.emit('c2', c2);
       });
@@ -136,11 +136,11 @@ describe('clouds-controller', function () {
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection({controller: {port: PORT}});
+      var c1 = controller.createConnection({port: PORT});
       c1.on('ready', function () {
         ep.emit('c1', c1);
       });
-      var c2 = controller.createConnection({controller: {port: PORT}});
+      var c2 = controller.createConnection({port: PORT});
       c2.on('ready', function () {
         ep.emit('c2', c2);
       });

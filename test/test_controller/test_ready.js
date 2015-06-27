@@ -22,8 +22,8 @@ describe('clouds-controller', function () {
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection({controller: {port: PORT}});
-      var c2 = controller.createConnection({controller: {port: PORT}});
+      var c1 = controller.createConnection({port: PORT});
+      var c2 = controller.createConnection({port: PORT});
       ready(c1, c2);
     });
 
@@ -72,8 +72,8 @@ describe('clouds-controller', function () {
     var ep = new EventProxy();
 
     s.on('listening', function () {
-      var c1 = controller.createConnection({controller: {port: PORT}});
-      var c2 = controller.createConnection({controller: {port: PORT}});
+      var c1 = controller.createConnection({port: PORT});
+      var c2 = controller.createConnection({port: PORT});
       ready(c1, c2);
     });
 
