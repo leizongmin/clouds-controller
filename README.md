@@ -43,11 +43,23 @@ var server = new clouds.Server({
 
 ### 2、启动`clouds-controller`服务器
 
+可以编写以下代码来启动：
+
 ```javascript
 var cloudsController = require('clouds-controller');
 
 var server = cloudsController.createServer();
 server.listen(6480, '127.0.0.1');
+```
+
+也可以通过安装`clouds-controller`命令来启动：
+
+```bash
+$ npm install clouds-controller -g
+```
+
+```bash
+$ clouds-controller -h 127.0.0.1 -p 6480
 ```
 
 

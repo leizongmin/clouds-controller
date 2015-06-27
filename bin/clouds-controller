@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var utils = require('lei-utils');
+var Log = require('log');
+var log = new Log('info');
+var controller = require('../');
+var define = require('../lib/define');
+var version = require('../package').version;
+
+
+program
+  .version(version)
+  .option('-h, --host <h>', 'host, default to ' + define.host)
+  .option('-p, --port <p>', 'port, default to ' + define.port, parseInt)
+  .parse(process.argv);
+
+var host = program.host || define.host;
+var port = program.port || define.port;
+
+
+var server = controller.createServer();
+server.listen(port, host);
+
+utils.bugfree();
+console.log('================================================================================');
+log.info('clouds-controller (version=%s, address=%s:%s)', version, host, port);
+
+function getServerInfo () {
+  return '(online clients: ' + server._clientCounter + ')';
+}
+
+server.on('listening', function () {
+  log.info('listening');
+});
+
+server.on('exit', function () {
+  log.info('exit');
+});
+
+server.on('connection', function (s) {
+  log.info('new connection from [%s] %s:%s %s', s.remoteFamily, s.remoteAddress, s.remotePort, getServerInfo());
+});
+
+server.on('client ready', function (p, s) {
+  log.info('client [%s] ready from [%s] %s:%s %s', p.id, s.remoteFamily, s.remoteAddress, s.remotePort, getServerInfo());
+});
+
+server.on('client removed', function (id) {
+  log.info('client [%s] removed %s', id, getServerInfo());
+});
+
+process.on('exit', function (code) {
+  log.info('process exit, code=%s', code);
+});
+
+process.on('uncaughtException', function (err) {
+  log.error('Caught exception: %s', (err && err.stack) || err);
+  if (err.code === 'EADDRINUSE') {
+    process.exit(1);
+  }
+});
