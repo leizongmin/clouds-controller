@@ -1,6 +1,6 @@
 {
   "name": "clouds-controller",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "clouds模块（https://github.com/leizongmin/clouds ）的可选控制器",
   "main": "index.js",
   "scripts": {
