@@ -1,4 +1,6 @@
 # clouds-controller
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/leizongmin/clouds-controller.svg)](https://greenkeeper.io/)
 clouds模块（https://github.com/leizongmin/clouds ）的可选控制器
 
 ## 安装
